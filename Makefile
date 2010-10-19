@@ -105,8 +105,16 @@ clean-iso:
 clean-vbox:
 	for ARCH in $(ARCH); \
 	do \
+		VBoxManage storagectl devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH \
+			--name IDE --remove || true; \
+		VBoxManage storagectl devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH \
+			--name SATA --remove || true; \
+		VBoxManage controlvm devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH \
+			poweroff || true; \
 		VBoxManage unregistervm \
-			devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH \
+			devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH || true; \
+		VBoxManage closemedium dvd \
+			$(PWD)/devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH.iso \
 			|| true; \
 		rm -rf devstructure-ubuntu-$(VERSION)-$(DISTRO)-$$ARCH; \
 	done
