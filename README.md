@@ -28,7 +28,8 @@ Customizations
 * The entire disk is partitioned `ext4` without LVM.
 * The default kernel for the architecture is used.
 * A user named `devstructure` is created with no password.  Authorized
-  SSH keys are required to login.
+  SSH keys are required to login.  By default, the Vagrant insecure key
+  is authorized.
 * DevStructure's Debian archive is added to the source list.
 * OpenSSH server is installed.
 

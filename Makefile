@@ -20,6 +20,7 @@ ubuntu-%: ubuntu-%.iso
 devstructure-%.iso: %
 	sudo cp isolinux.cfg $</isolinux/
 	sudo cp devstructure.seed $</preseed/
+	sudo cp devstructure.sh $</
 	sudo mkisofs -r -V "Ubuntu $(VERSION) for DevStructure" \
 		-cache-inodes -J -l -no-emul-boot \
 		-b isolinux/isolinux.bin \
