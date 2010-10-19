@@ -1,2 +1,7 @@
 Ubuntu for DevStructure
 =======================
+
+Build a custom Ubuntu ISO for DevStructure by downloading, extracting,
+tweaking, and packaging the stock Ubuntu ISO.
+
+The tools depend on Mac OS X but the output may be used anywhere.
