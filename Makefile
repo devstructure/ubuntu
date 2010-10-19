@@ -59,25 +59,26 @@ devstructure-%: devstructure-%.iso
 		--usb off --usbehci off \
 		--vrdp off \
 		--teleporter off
+	VBoxManage openmedium dvd $(PWD)/$<
 	VBoxManage storagectl $@ \
 		--name IDE \
 		--add ide
-	VBoxManage storagectl $@ \
-		--name SATA \
-		--add sata
 	VBoxManage storageattach $@ \
 		--storagectl IDE \
 		--port 1 --device 0 \
 		--type dvddrive --medium $(PWD)/$<
 	VBoxManage createhd \
-		--filename $@/$@.vmdk \
+		--filename $(PWD)/$@/$@.vmdk \
 		--size 40000 \
 		--format VMDK \
 		|| true
+	VBoxManage storagectl $@ \
+		--name SATA \
+		--add sata
 	VBoxManage storageattach $@ \
-		--storagectl IDE \
+		--storagectl SATA \
 		--port 0 --device 0 \
-		--type hdd --medium $@/$@.vmdk
+		--type hdd --medium $(PWD)/$@/$@.vmdk
 	VBoxManage startvm $@ \
 		--type gui
 
