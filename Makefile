@@ -18,7 +18,6 @@ ubuntu-%: ubuntu-%.iso
 	hdiutil detach mount
 
 devstructure-%.iso: %
-	#sudo cp txt.cfg $</isolinux/
 	sudo cp isolinux.cfg $</isolinux/
 	sudo cp devstructure.seed $</preseed/
 	sudo mkisofs -r -V "Ubuntu $(VERSION) for DevStructure" \
