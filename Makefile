@@ -18,12 +18,17 @@ ubuntu-%: ubuntu-%.iso
 	hdiutil detach mount
 
 devstructure-%.iso: %
-	@echo DEBUG '@:' $@
-	@echo DEBUG '<:' $<
-	# TODO
-	hdiutil makehybrid -o $@ -iso -joliet $<
+	#sudo cp txt.cfg $</isolinux/
+	sudo cp isolinux.cfg $</isolinux/
+	sudo cp devstructure.seed $</preseed/
+	sudo mkisofs -r -V "Ubuntu $(VERSION) for DevStructure" \
+		-cache-inodes -J -l -no-emul-boot \
+		-b isolinux/isolinux.bin \
+		-c isolinux/boot.cat \
+		-boot-load-size 4 -boot-info-table \
+		-o $@ $<
 
 clean:
-	rm devstructure-ubuntu-$(VERSION)-$(DISTRO)-*.iso
+	rm -f devstructure-ubuntu-$(VERSION)-$(DISTRO)-*.iso
 
 .PHONY: all clean
