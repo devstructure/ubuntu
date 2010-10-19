@@ -16,12 +16,14 @@ ubuntu-%: ubuntu-%.iso
 	hdiutil attach -mountpoint mount $@.iso
 	rsync -a mount/ $@
 	hdiutil detach mount
+	chmod -R +w $@
 
 devstructure-%.iso: %
-	sudo cp isolinux.cfg $</isolinux/
-	sudo cp devstructure.seed $</preseed/
-	sudo cp devstructure.sh $</
-	sudo mkisofs -r -V "Ubuntu $(VERSION) for DevStructure" \
+	cp isolinux.cfg $</isolinux/
+	m4 -D__KERNEL__=linux-$(if $(findstring i386,$@),generic-pae,server) \
+		devstructure.seed.m4 >$</preseed/devstructure.seed
+	cp devstructure.sh $</
+	mkisofs -r -V "Ubuntu $(VERSION) for DevStructure" \
 		-cache-inodes -J -l -no-emul-boot \
 		-b isolinux/isolinux.bin \
 		-c isolinux/boot.cat \

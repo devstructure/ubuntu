@@ -22,8 +22,7 @@ d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 
 # Kernel.
-#d-i base-installer/kernel/override-image string linux-server
-d-i base-installer/kernel/override-image string linux-generic-pae
+d-i base-installer/kernel/override-image string __KERNEL__
 
 # Users.
 d-i passwd/user-fullname string DevStructure
@@ -36,8 +35,8 @@ d-i mirror/http/proxy string
 d-i apt-setup/local0/repository string http://packages.devstructure.com maverick main
 d-i apt-setup/local0/source boolean false
 d-i apt-setup/local0/key string http://packages.devstructure.com/keyring.gpg
-tasksel tasksel/first multiselect openssh-server
-#d-i pkgsel/include string openssh-server
+tasksel tasksel/first multiselect
+d-i pkgsel/include string openssh-server
 #d-i pkgsel/include string sandbox blueprint
 d-i pkgsel/update-policy select none
 d-i pkgsel/install-language-support boolean false
