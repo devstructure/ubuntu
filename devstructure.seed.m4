@@ -25,6 +25,7 @@ d-i partman/confirm_nooverwrite boolean true
 d-i base-installer/kernel/override-image string __KERNEL__
 
 # Users.
+d-i passwd/user-uid string 1000
 d-i passwd/user-fullname string DevStructure
 d-i passwd/username string devstructure
 d-i passwd/user-password-crypted password !
