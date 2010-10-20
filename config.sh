@@ -18,3 +18,6 @@
 # SSH key to be authorized in virtual machines.
 : ${PRIVATE_KEY:="vagrant"}
 : ${PUBLIC_KEY:="vagrant.pub"}
+
+# Fully-qualified pathname of VBoxGuestAdditions.iso.
+: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}

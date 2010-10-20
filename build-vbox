@@ -74,7 +74,7 @@ do
 	VBoxManage storageattach "$VBOX" \
 		--storagectl IDE \
 		--port 1 --device 0 \
-		--type dvddrive --medium "VBoxGuestAdditions.iso"
+		--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
 	# TODO Install VBoxGuestAdditions.
 
 	# Power off the virtual machine.
