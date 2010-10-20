@@ -74,6 +74,7 @@ do
 		--port 1 --device 0 \
 		--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
 	eval "$SSH \"
+		set -e
 		sudo apt-get -y install linux-headers-\\\$(uname -r) build-essential
 		until sudo mount /dev/cdrom /media/cdrom
 		do
