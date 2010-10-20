@@ -1,8 +1,8 @@
 # Preseed Ubuntu for DevStructure.
 
 # Network.
-d-i netcfg/get_hostname string __HOSTNAME__
-d-i netcfg/get_domain string __DOMAINNAME__
+d-i netcfg/get_hostname string __HOST__
+d-i netcfg/get_domain string __DOMAIN__
 d-i netcfg/wireless_wep string
 
 # Clock.

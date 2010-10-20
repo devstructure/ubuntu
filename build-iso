@@ -27,8 +27,8 @@ do
 	# Customize the writable copy.
 	cp "isolinux.cfg" "$COPY/isolinux/"
 	m4 \
-		-D __HOSTNAME__="$HOSTNAME" \
-		-D __DOMAINNAME__="$DOMAINNAME" \
+		-D __HOST__="$HOST" \
+		-D __DOMAIN__="$DOMAIN" \
 		-D __KERNEL__="linux-$([ "$ARCH" = "i386" ] \
 			&& echo generic-pae \
 			|| echo server)" \

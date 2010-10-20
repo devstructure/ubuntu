@@ -9,8 +9,8 @@
 : ${ARCHS:="i386 amd64"}
 
 # Hardcoded host information.
-: ${HOSTNAME:="devstructure"}
-: ${DOMAINNAME:="vagrantup.com"}
+: ${HOST:="devstructure"}
+: ${DOMAIN:="vagrantup.com"}
 : ${ROOT_PASSWORD:="vagrant"}
 : ${USERNAME:="vagrant"}
 : ${PASSWORD:="vagrant"}
