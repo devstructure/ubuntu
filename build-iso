@@ -31,7 +31,8 @@ do
 		-D __DOMAIN__="$DOMAIN" \
 		-D __KERNEL__="linux-$([ "$ARCH" = "i386" ] \
 			&& echo generic-pae \
-			|| echo server)" \
+			|| echo server
+		)" \
 		-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
 		-D __USERNAME__="$USERNAME" \
 		-D __PASSWORD__="$PASSWORD" \
