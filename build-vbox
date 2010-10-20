@@ -1,0 +1,83 @@
+#!/bin/sh
+
+set -e
+
+. "$(dirname $0)/config.sh"
+
+for ARCH in $ARCHS
+do
+	ISO="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	VBOX="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH"
+
+	# Create and configure a virtual machine through VirtualBox.
+	VBoxManage createvm \
+		--name "$VBOX" \
+		--basefolder "$PWD" \
+		--register \
+		|| true
+	VBoxManage modifyvm "$VBOX" \
+		--ostype "Ubuntu$([ "$ARCH" = "i386" ] || echo _64)" \
+		--memory 360 \
+		--vram 12 \
+		--acpi on --ioapic on \
+		--cpus 1 \
+		--pae "$([ "$ARCH" = "i386" ] && echo on || echo off)" \
+		--hwvirtex on \
+		--hwvirtexexcl off \
+		--nestedpaging on \
+		--accelerate3d off \
+		--nic1 nat \
+		--natpf1 guestssh,tcp,,2222,,22 \
+		--audio none \
+		--clipboard disabled \
+		--usb off --usbehci off \
+		--vrdp off \
+		--teleporter off
+
+	# Mount the custom installation ISO.
+	VBoxManage openmedium dvd "$PWD/$ISO" || true
+	VBoxManage storagectl "$VBOX" \
+		--name IDE \
+		--add ide
+	VBoxManage storageattach "$VBOX" \
+		--storagectl IDE \
+		--port 1 --device 0 \
+		--type dvddrive --medium "$PWD/$ISO"
+
+	# Mount a virtual hard disk.
+	VBoxManage createhd \
+		--filename "$PWD/$VBOX/$VBOX.vmdk" \
+		--size 40000 \
+		--format VMDK \
+		|| true
+	VBoxManage storagectl "$VBOX" \
+		--name SATA \
+		--add sata
+	VBoxManage storageattach "$VBOX" \
+		--storagectl SATA \
+		--port 0 --device 0 \
+		--type hdd --medium "$PWD/$VBOX/$VBOX.vmdk"
+
+	# Start the installation.
+	VBoxManage startvm "$VBOX" \
+		--type gui
+
+	# Spin slowly until SSH is usable.
+	until ssh \
+		-o UserKnownHostsFile=/dev/null \
+		-o StrictHostKeyChecking=no \
+		-l vagrant -i vagrant -p 2222 localhost exit; \
+	do sleep 60; done
+
+	# Attach the VBoxGuestAdditions ISO, implicitly detaching the custom
+	# installation ISO in the process.
+	VBoxManage storageattach "$VBOX" \
+		--storagectl IDE \
+		--port 1 --device 0 \
+		--type dvddrive --medium "VBoxGuestAdditions.iso"
+	# TODO Install VBoxGuestAdditions.
+
+	# Power off the virtual machine.
+	VBoxManage controlvm "$VBOX" poweroff
+
+done

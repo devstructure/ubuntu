@@ -1,8 +1,8 @@
 # Preseed Ubuntu for DevStructure.
 
 # Network.
-d-i netcfg/get_hostname string devbox
-d-i netcfg/get_domain string devbox
+d-i netcfg/get_hostname string __HOSTNAME__
+d-i netcfg/get_domain string __DOMAINNAME__
 d-i netcfg/wireless_wep string
 
 # Clock.
@@ -25,10 +25,14 @@ d-i partman/confirm_nooverwrite boolean true
 d-i base-installer/kernel/override-image string __KERNEL__
 
 # Users.
+d-i passwd/root-password password __ROOT_PASSWORD__
+d-i passwd/root-password-again password __ROOT_PASSWORD__
 d-i passwd/user-uid string 1000
 d-i passwd/user-fullname string DevStructure
-d-i passwd/username string devstructure
-d-i passwd/user-password-crypted password !
+d-i passwd/username string __USERNAME__
+d-i passwd/user-password password __PASSWORD__
+d-i passwd/user-password-again password __PASSWORD__
+d-i user-setup/allow-password-weak boolean true
 d-i user-setup/encrypt-home boolean false
 
 # Packages and repositories.

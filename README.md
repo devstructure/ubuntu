@@ -37,3 +37,18 @@ Further Customization
 ---------------------
 
 TODO
+
+Building
+--------
+
+Building ISO images:
+
+	./build-iso
+
+Building virtual machines through VirtualBox:
+
+	./build-vbox
+
+Building Vagrant boxes:
+
+	./build-vagrant

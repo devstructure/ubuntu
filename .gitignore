@@ -3,3 +3,5 @@
 mount
 ubuntu-*-server-*
 devstructure-ubuntu-*-server-*
+id_rsa
+id_rsa.pub
