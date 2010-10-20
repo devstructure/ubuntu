@@ -4,13 +4,6 @@ set -e
 
 . "$(dirname $0)/config.sh"
 
-# SSH command that will connect to the virtual machine.
-SSH="ssh \
-	-o UserKnownHostsFile=/dev/null \
-	-o StrictHostKeyChecking=no \
-	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p 2222 localhost \
-"
-
 for ARCH in $ARCHS
 do
 	ISO="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
@@ -65,11 +58,9 @@ do
 		--port 0 --device 0 \
 		--type hdd --medium "$PWD/$VBOX/$VBOX.vmdk"
 
-	# Start the installation.
-	VBoxManage startvm "$VBOX" \
-		--type gui
-
-	# Spin slowly until SSH is usable.
+	# Start the virtual machine and the OS installation.  This will take
+	# a while so this time it gets a GUI.  Spin slowly until SSH is usable.
+	VBoxManage startvm "$VBOX" --type gui
 	until eval "$SSH exit"
 	do
 		sleep 60

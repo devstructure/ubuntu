@@ -19,5 +19,13 @@
 : ${PRIVATE_KEY:="vagrant"}
 : ${PUBLIC_KEY:="vagrant.pub"}
 
+# SSH command that will connect to the virtual machine.  Add commands
+# onto the end to do other tricks.
+: ${SSH:="ssh \
+	-o UserKnownHostsFile=/dev/null \
+	-o StrictHostKeyChecking=no \
+	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p 2222 localhost \
+"}
+
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
 : ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
