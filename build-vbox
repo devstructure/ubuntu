@@ -76,12 +76,24 @@ do
 	done
 
 	# Attach the VBoxGuestAdditions ISO, implicitly detaching the custom
-	# installation ISO in the process.
+	# installation ISO in the process.  Install the additions and empty
+	# the drive.
 	VBoxManage storageattach "$VBOX" \
 		--storagectl IDE \
 		--port 1 --device 0 \
 		--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
-	# TODO Install VBoxGuestAdditions.
+	eval $SSH "
+		sudo mount /dev/cdrom /media/cdrom
+		sudo /media/cdrom/VBoxLinuxAdditions-$([ "$ARCH" = "i386" ] \
+			&& echo x86 \
+			|| echo amd64
+		).run
+		sudo umount /media/cdrom
+	"
+	VBoxManage storageattach "$VBOX" \
+		--storagectl IDE \
+		--port 1 --device 0 \
+		--type dvddrive --medium emptydrive
 
 	# Power off the virtual machine.
 	VBoxManage controlvm "$VBOX" poweroff
