@@ -4,6 +4,13 @@ set -e
 
 . "$(dirname $0)/config.sh"
 
+# SSH command that will connect to the virtual machine.
+SSH="ssh
+	-o UserKnownHostsFile=/dev/null
+	-o StrictHostKeyChecking=no
+	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p 2222 localhost
+"
+
 for ARCH in $ARCHS
 do
 	ISO="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
@@ -63,11 +70,10 @@ do
 		--type gui
 
 	# Spin slowly until SSH is usable.
-	until ssh \
-		-o UserKnownHostsFile=/dev/null \
-		-o StrictHostKeyChecking=no \
-		-l vagrant -i vagrant -p 2222 localhost exit; \
-	do sleep 60; done
+	until eval $SSH exit
+	do
+		sleep 60
+	done
 
 	# Attach the VBoxGuestAdditions ISO, implicitly detaching the custom
 	# installation ISO in the process.
