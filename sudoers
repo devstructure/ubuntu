@@ -1,0 +1,6 @@
+Defaults !env_reset
+Defaults !secure_path
+Defaults env_delete-=RUBYLIB
+Defaults env_delete-=RUBYOPT
+
+ALL ALL=(ALL) NOPASSWD: ALL
