@@ -7,9 +7,10 @@ tweaking, and packaging the stock Ubuntu ISO.
 Build dependencies
 ------------------
 
+* `curl`(1).
 * `hdiutil`(1), and therefore Mac OS X.  It may be possible to relax
   this dependency but it has not been investigated.
-* `curl`(1).
+* `m4`(1).
 * `mkisofs`(1) from the `cdrtools` package available from MacPorts or
   Homebrew.
 
