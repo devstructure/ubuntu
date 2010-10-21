@@ -91,7 +91,7 @@ do
 		--port 1 --device 0 \
 		--type dvddrive --medium emptydrive
 
-	# Power off the virtual machine.
-	VBoxManage controlvm "$VBOX" poweroff
+	# Shutdown the virtual machine.
+	eval "$SSH sudo shutdown -h now"
 
 done
