@@ -92,6 +92,6 @@ do
 		--type dvddrive --medium emptydrive
 
 	# Shutdown the virtual machine.
-	eval "$SSH sudo shutdown -h now"
+	eval "$SSH \"sudo shutdown -h now\""
 
 done

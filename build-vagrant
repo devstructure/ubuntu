@@ -30,7 +30,7 @@ do
 	\""
 
 	# Shutdown the virtual machine.
-	eval "$SSH sudo shutdown -h now"
+	eval "$SSH \"sudo shutdown -h now\""
 
 	# Now build the Vagrant box file.
 	vagrant package --base "$VBOX"
