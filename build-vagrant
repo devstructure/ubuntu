@@ -33,8 +33,8 @@ do
 	eval "$SSH sudo shutdown -h now"
 
 	# Now build the Vagrant box file.
-	BOX="devstructure$([ "$ARCH" = "i386" ] && echo 32 || echo 64)"
-	vagrant package --base "$BOX"
-	mv "package.box" "$BOX.box"
+	vagrant package --base "$VBOX"
+	mv "package.box" \
+		"devstructure$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
 
 done
