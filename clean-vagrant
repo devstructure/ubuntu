@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# set -e # Try our best to finish here.
+
+. "$(dirname $0)/config.sh"
+
+for ARCH in $ARCHS
+do
+	rm -f "devstructure$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
+done
