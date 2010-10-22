@@ -41,7 +41,8 @@ d-i apt-setup/local0/repository string http://packages.devstructure.com maverick
 d-i apt-setup/local0/source boolean false
 d-i apt-setup/local0/key string http://packages.devstructure.com/keyring.gpg
 tasksel tasksel/first multiselect
-d-i pkgsel/include string openssh-server sandbox blueprint
+d-i pkgsel/include string openssh-server
+#d-i pkgsel/include string openssh-server sandbox blueprint
 d-i pkgsel/update-policy select none
 d-i pkgsel/install-language-support boolean false
 

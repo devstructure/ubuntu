@@ -87,6 +87,13 @@ do
 	sudo touch /etc/token
 	echo "$TOKEN" >~/.token
 
+	# Install the DevStructure software.
+	echo
+	echo "One moment while we install the DevStructure packaegs..."
+	echo
+	sudo apt-get update
+	sudo apt-get -y install sandbox blueprint
+
 	# Now the complete welcome message.
 	echo
 	echo "\033[1mWELCOME TO DEVSTRUCTURE\033[0m"
