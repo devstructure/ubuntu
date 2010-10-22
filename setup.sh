@@ -8,12 +8,12 @@ echo "\033[1mGET STARTED WITH DEVSTRUCTURE\033[0m"
 echo
 while true
 do
-	read -p "Do you have an account? (Ctrl+C to postpone.) [yN] " YESNO
+	read -p "Do you have an account? (yes/no/skip) " YESNO
 	[ -z "$YESNO" ] && YESNO="n"
 	case "$YESNO" in
 
 		# Sign in.
-		y|Y)
+		yes|y|Y)
 			read -p "Email or login: " VALUE
 			stty -echo
 			read -p "Password: " PASSWORD
@@ -29,7 +29,7 @@ do
 				"https://api.devstructure.com/sign_in" || echo -)";;
 
 		# Sign up.
-		n|N)
+		no|n|N)
 			read -p "Email: " EMAIL
 			read -p "Login: " LOGIN
 			stty -echo
@@ -47,6 +47,11 @@ do
 				-d login="$LOGIN" \
 				-d password="$PASSWORD" \
 				"https://api.devstructure.com/sign_up" || echo -)";;
+
+		# Skip setup for now.
+		skip|s|S)
+			echo "Skipping DevStructure setup for now."
+			break;;
 
 		# Ask again.
 		*) continue;;
