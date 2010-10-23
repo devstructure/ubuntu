@@ -93,5 +93,9 @@ do
 
 	# Shutdown the virtual machine.
 	eval "$SSH \"sudo shutdown -h now\""
+	until VBoxManage showvminfo "$VBOX" | grep "^State: *powered off"
+	do
+		sleep 1
+	done
 
 done
