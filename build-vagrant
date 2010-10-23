@@ -42,3 +42,6 @@ do
 		"devstructure$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
 
 done
+
+# Creating Vagrant boxes ruins the normal VM setup so get rid of them.
+eval "$(dirname $0)/clean-vbox"
