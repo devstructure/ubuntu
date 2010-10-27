@@ -101,18 +101,18 @@ do
 
 	# Now the complete welcome message.
 	echo
-	echo "\033[1mWELCOME TO DEVSTRUCTURE\033[0m"
+	echo -e "\033[1mWELCOME TO DEVSTRUCTURE\033[0m"
 	echo
-	echo "Get started by creating a sandbox: " \
+	echo -e "Get started by creating a sandbox: " \
 		"\033[4msandbox create my-first-sandbox\033[0m"
 	echo
-	echo "Work there to keep your server clean: " \
+	echo -e "Work there to keep your server clean: " \
 		"\033[4msandbox use my-first-sandbox\033[0m"
 	echo
-	echo "And when you're ready to deploy: " \
+	echo -e "And when you're ready to deploy: " \
 		"\033[4mblueprint create my-first-blueprint\033[0m"
 	echo
-	echo "Learn more at \033[4mhttp://docs.devstructure.com/start\033[0m"
+	echo -e "Learn more at \033[4mhttp://docs.devstructure.com/start\033[0m"
 
 	# This run was successful so setup.sh is no longer necessary.
 	sudo rm /etc/profile.d/setup.sh
