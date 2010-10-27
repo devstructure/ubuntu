@@ -94,7 +94,7 @@ do
 
 	# Install the DevStructure software.
 	echo
-	echo "One moment while we install the DevStructure packaegs..."
+	echo "One moment while we install the DevStructure packages..."
 	echo
 	sudo apt-get update
 	sudo apt-get -y install sandbox blueprint
