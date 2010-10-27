@@ -15,7 +15,7 @@ cp /cdrom/sudoers /target/etc/
 chmod 440 /target/etc/sudoers
 chown 0:0 /target/etc/sudoers
 
-chroot /target sh -c "
+chroot /target sh -c '
 	apt-get update
 	apt-get -y install sandbox blueprint
-"
+'
