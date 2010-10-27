@@ -4,7 +4,7 @@
 TMPNAME=$(mktemp devstructure-XXXXXXXXXX)
 trap "rm -rf \"$TMPNAME\"" 0
 echo
-echo "\033[1mGET STARTED WITH DEVSTRUCTURE\033[0m"
+echo -e "\033[1mGET STARTED WITH DEVSTRUCTURE\033[0m"
 echo
 while true
 do
@@ -84,7 +84,8 @@ do
 	TOKEN=$(tr , \\n <"$TMPNAME" | tr -d \" | grep ^token | cut -c7-)
 	[ -z "$TOKEN" ] && {
 		echo "No DevStructure API token found." >&2
-		echo "Please contact us at \033[4msupport@devstructure.com\033[0m." >&2
+		echo -e \
+			"Please contact us at \033[4msupport@devstructure.com\033[0m." >&2
 		break
 	}
 
@@ -94,7 +95,7 @@ do
 
 	# Install the DevStructure software.
 	echo
-	echo "One moment while we install the DevStructure packages..."
+	echo "One moment while we upgrade the DevStructure packages..."
 	echo
 	sudo apt-get update
 	sudo apt-get -y install sandbox blueprint
