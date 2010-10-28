@@ -90,7 +90,6 @@ do
 	}
 
 	# Store the DevStructure API token for later.
-	sudo touch /etc/token
 	echo "$TOKEN" >~/.token
 
 	# Install the DevStructure software.
