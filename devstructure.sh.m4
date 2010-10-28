@@ -16,6 +16,8 @@ chmod 440 /target/etc/sudoers
 chown 0:0 /target/etc/sudoers
 
 chroot /target sh -c '
+	set -e
+	unset DEBCONF_REDIR DEBCONF_FRONTEND DEBIAN_HAS_FRONTEND DEBIAN_FRONTEND
 	apt-get update
 	apt-get -y install sandbox blueprint
 '
