@@ -2,7 +2,6 @@
 
 # Gather credentials.
 TMPNAME=$(mktemp devstructure-XXXXXXXXXX)
-trap "rm -rf \"$TMPNAME\"" 0
 echo
 echo -e "\033[1mGET STARTED WITH DEVSTRUCTURE\033[0m"
 echo
@@ -119,3 +118,5 @@ do
 
 	break
 done
+
+rm -f "$TMPNAME"
