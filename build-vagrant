@@ -23,10 +23,10 @@ do
 		wget http://production.cf.rubygems.org/rubygems/rubygems-1.3.7.tgz
 		tar xzf rubygems-1.3.7.tgz
 		cd rubygems-1.3.7
-		sudo ruby setup.rb --no-format-executable
+		sudo ruby setup.rb --no-format-executable --prefix=/usr
 		cd ..
 		rm -rf rubygems-1.3.7 rubygems-1.3.7.tgz
-		sudo gem install chef --no-rdoc --no-ri
+		sudo gem install --no-rdoc --no-ri chef
 	\""
 
 	# Shutdown the virtual machine.
