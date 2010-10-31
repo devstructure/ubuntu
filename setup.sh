@@ -80,7 +80,9 @@ do
 	esac
 
 	# Parse out the DevStructure API token.
-	TOKEN=$(tr , \\n <"$TMPNAME" | tr -d \" | grep ^token | cut -c7-)
+	TMP=$(tr , \\n <"$TMPNAME" | tr -d \"\{\})
+	LOGIN=$(echo "$TMP" | grep ^login | cut -c7-)
+	TOKEN=$(echo "$TMP" | grep ^token | cut -c7-)
 	[ -z "$TOKEN" ] && {
 		echo "No DevStructure API token found." >&2
 		echo -e \
@@ -89,6 +91,7 @@ do
 	}
 
 	# Store the DevStructure API token for later.
+	echo "$LOGIN" >~/.login
 	echo "$TOKEN" >~/.token
 
 	# Install the DevStructure software.
