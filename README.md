@@ -43,7 +43,7 @@ Features in the Vagrant boxes
 
 * Ruby 1.8.7
 * RubyGems 1.3.7
-* Chef 0.9.10
+* Chef 0.9.12
 
 Building
 --------
