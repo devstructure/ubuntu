@@ -37,7 +37,7 @@ do
 		-D __USERNAME__="$USERNAME" \
 		-D __PASSWORD__="$PASSWORD" \
 		"devstructure.seed.m4" >"$COPY/preseed/devstructure.seed"
-	cp "$PUBLIC_KEY" "setup.sh" "$COPY/"
+    # cp "$PUBLIC_KEY" "setup.sh" "$COPY/"
 	cp "$PUBLIC_KEY" "sudoers" "$COPY/"
 	m4 \
 		-D __USERNAME__="$USERNAME" \

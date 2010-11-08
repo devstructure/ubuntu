@@ -9,7 +9,8 @@
 : ${ARCHS:="i386 amd64"}
 
 # Hardcoded host information.
-: ${HOST:="devstructure"}
+# : ${HOST:="devstructure"}
+: ${HOST:="vagrant-ubuntu-maverick"}
 : ${DOMAIN:="vagrantup.com"}
 : ${ROOT_PASSWORD:="vagrant"}
 : ${USERNAME:="vagrant"}

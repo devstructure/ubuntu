@@ -34,7 +34,7 @@ do
 	# Now build the Vagrant box file.
 	vagrant package --base "$VBOX"
 	mv "package.box" \
-		"devstructure$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
+		"maverick$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
 
 done
 
