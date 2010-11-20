@@ -10,7 +10,7 @@
 
 # Hardcoded host information.
 # : ${HOST:="devstructure"}
-: ${HOST:="vagrant-ubuntu-maverick"}
+: ${HOST:="maverick"}
 : ${DOMAIN:="vagrantup.com"}
 : ${ROOT_PASSWORD:="vagrant"}
 : ${USERNAME:="vagrant"}
