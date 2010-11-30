@@ -19,9 +19,10 @@ do
 
 	# Make a writable copy of the original ISO.  This uses the `hdiutil`
 	# command that is specific to Mac OS X.
-	hdiutil attach -mountpoint "mount" "$ORIG"
+        mkdir -p isomount
+	mount isomount "${ORIG}"
 	rsync -a "mount/" "$COPY"
-	hdiutil detach "mount"
+	umount isomount
 	chmod -R +w "$COPY"
 
 	# Customize the writable copy.
