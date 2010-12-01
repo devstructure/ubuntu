@@ -5,6 +5,11 @@
 : ${DISTRO:="server"}
 : ${RELEASE:="latest"}
 
+# Generated ISO Prefix
+: ${ISOPREFIX:="vagrant"}
+: ${LABEL:="vagrant"}
+
+
 # Architectures being built.
 : ${ARCHS:="i386 amd64"}
 
@@ -29,4 +34,5 @@
 "}
 
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
-: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
+#: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
+: ${VBOX_GUEST_ADDITIONS:="/usr/share/virtualbox/VBoxGuestAdditions.iso"}

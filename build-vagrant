@@ -6,7 +6,7 @@ set -e
 
 for ARCH in $ARCHS
 do
-	VBOX="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH"
+	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 	# Start the virtual machine.  Spin slowly until SSH is usable.
 	VBoxManage startvm "$VBOX" --type gui
@@ -34,7 +34,7 @@ do
 	# Now build the Vagrant box file.
 	vagrant package --base "$VBOX"
 	mv "package.box" \
-		"maverick$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
+		"${LABEL}$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
 
 done
 

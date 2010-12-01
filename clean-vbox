@@ -6,8 +6,8 @@
 
 for ARCH in $ARCHS
 do
-	ISO="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
-	VBOX="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH"
+	ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 	VBoxManage controlvm "$VBOX" poweroff
 	VBoxManage storagectl "$VBOX" --name IDE --remove

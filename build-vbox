@@ -6,8 +6,8 @@ set -e
 
 for ARCH in $ARCHS
 do
-	ISO="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
-	VBOX="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH"
+	ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 	# Create and configure a virtual machine through VirtualBox.
 	VBoxManage createvm \
