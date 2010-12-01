@@ -61,6 +61,8 @@ do
 	# Start the virtual machine and the OS installation.  This will take
 	# a while so this time it gets a GUI.  Spin slowly until SSH is usable.
 	VBoxManage startvm "$VBOX" --type gui
+	## Set better perms on the private key to avoid ssh abort
+	chmod 600 ${PRIVATE_KEY}
 	until eval "$SSH exit"
 	do
 		sleep 60
