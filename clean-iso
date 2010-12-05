@@ -6,5 +6,5 @@
 
 for ARCH in $ARCHS
 do
-	rm -f "devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	rm -f "${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 done

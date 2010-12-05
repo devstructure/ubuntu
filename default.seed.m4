@@ -1,4 +1,4 @@
-# Preseed Ubuntu for DevStructure.
+# Preseed Ubuntu for vagrant.
 
 # Network.
 d-i netcfg/get_hostname string __HOST__
@@ -28,7 +28,7 @@ d-i base-installer/kernel/override-image string __KERNEL__
 d-i passwd/root-password password __ROOT_PASSWORD__
 d-i passwd/root-password-again password __ROOT_PASSWORD__
 d-i passwd/user-uid string 1000
-d-i passwd/user-fullname string DevStructure
+d-i passwd/user-fullname string VagrantUser
 d-i passwd/username string __USERNAME__
 d-i passwd/user-password password __PASSWORD__
 d-i passwd/user-password-again password __PASSWORD__
@@ -54,4 +54,4 @@ d-i cdrom-detect/eject boolean true
 d-i debian-installer/splash boolean false
 
 # Everything else.
-d-i preseed/late_command string sh /cdrom/devstructure.sh
+d-i preseed/late_command string sh /cdrom/__LABEL__.sh
