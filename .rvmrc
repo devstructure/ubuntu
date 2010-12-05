@@ -1,0 +1,8 @@
+ruby_ver=ruby-1.9.2
+#gemset_name=vagrant
+gemset_name=${gemset_name:-$(basename $(pwd))}
+
+
+## The rest is auto...
+
+rvm_install_on_use_flag=1 rvm --create use ${ruby_ver}@${gemset_name:-$(basename $(pwd))} > /dev/null
