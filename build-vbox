@@ -99,5 +99,5 @@ do
 	do
 		sleep 1
 	done
-
+	VBoxManage snapshot "${VBOX}" take "AUTO_${LABEL}_base_build #000001" --description "Snapshot taken after initial build to be able to restore back when recreating vagrant boxes"
 done

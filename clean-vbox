@@ -10,6 +10,8 @@ do
 	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 	VBoxManage controlvm "$VBOX" poweroff
+	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_base_build #000001"
+	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_vagrant_build #000002"
 	VBoxManage storagectl "$VBOX" --name IDE --remove
 	VBoxManage storagectl "$VBOX" --name SATA --remove
 	VBoxManage unregistervm "$VBOX"

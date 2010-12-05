@@ -8,6 +8,9 @@ for ARCH in $ARCHS
 do
 	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
+	# Reset to snapshot at time of initial build
+	VBoxManage snapshot "${VBOX}" restore "AUTO_${LABEL}_base_build #000001"
+
 	# Start the virtual machine.  Spin slowly until SSH is usable.
 	VBoxManage startvm "$VBOX" --type gui
 	#VBoxHeadless --startvm "$VBOX" --vrdp config
@@ -36,7 +39,9 @@ do
 	mv "package.box" \
 		"${LABEL}$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
 
+        # Snapshot after vagrant dep install....
+        VBoxManage snapshot "${VBOX}" take "AUTO_${LABEL}_vagrant_base #000002" --description "Snapshot taken after installing vagrant dependencies"
 done
 
 # Creating Vagrant boxes ruins the normal VM setup so get rid of them.
-eval "$(dirname $0)/clean-vbox"
+#eval "$(dirname $0)/clean-vbox"
