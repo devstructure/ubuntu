@@ -37,6 +37,23 @@ do
 		sleep 1
 	done
 
+	## Check if vagrant box dir for vagrant drives is hosted on an ext4 fs. If so, ensure hostiocache is enabled to avoid corruption
+	[ ${HOSTIOCACHE} ] || {
+          vbox_hd_dir="$HOME/.vagrant/boxes"
+          HOSTIOCACHE="";
+	  for dir in ${vbox_hd_dir}; do
+	    vbox_hd_dir_disk=$(df ${dir} | tail -n 1 | cut -d" " -f1);
+	    vbox_hd_dir_fs="$(grep ${vbox_hd_dir_disk} /proc/mounts | awk '{ print $3 }')"
+	    [ "$vbox_hd_dir_fs" = "ext4" ] && {
+	    echo "Auto enabling HOSTIOCACHE due ext4 fs [${dir}]";
+	      HOSTIOCACHE=" --hostiocache on ";
+	      VBoxManage storagectl "$VBOX" \
+	          --name SATA ${HOSTIOCACHE} \
+	      break;
+	    }
+	  done
+	}
+
 	# Now build the Vagrant box file.
 	vagrant package --base "$VBOX"
 	mv "package.box" \

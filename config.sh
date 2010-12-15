@@ -36,3 +36,9 @@
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
 #: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
 : ${VBOX_GUEST_ADDITIONS:="/usr/share/virtualbox/VBoxGuestAdditions.iso"}
+
+# Enable Host IO cache on ext4 filesystems. Unless explicitly specified here, build-vbox will check both current build dir and home dir (home of vagrant box cache) to see if they are ext4 filesystems
+# Enable hostiocache var
+#: ${HOSTIOCACHE:=" --hostiocache on"}
+# Disable hostiocache var
+#: ${HOSTIOCACHE:=""}

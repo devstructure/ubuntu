@@ -50,8 +50,24 @@ do
 		--size 40000 \
 		--format VMDK \
 		|| true
+
+	## Check if the current dir for vagrant drives is hosted on an ext4 fs. If so, ensure hostiocache is enabled to avoid corruption
+	[ ${HOSTIOCACHE} ] || {
+          vbox_hd_dir="$PWD/$VBOX/";
+          HOSTIOCACHE="";
+	  for dir in ${vbox_hd_dir}; do
+	    vbox_hd_dir_disk=$(df ${dir} | tail -n 1 | cut -d" " -f1);
+	    vbox_hd_dir_fs="$(grep ${vbox_hd_dir_disk} /proc/mounts | awk '{ print $3 }')"
+	    [ "$vbox_hd_dir_fs" = "ext4" ] && {
+              echo "Auto enabling HOSTIOCACHE due ext4 [${dir}]";
+	      HOSTIOCACHE=" --hostiocache on ";
+	      break;
+	    }
+	  done
+	}
+
 	VBoxManage storagectl "$VBOX" \
-		--name SATA \
+		--name SATA ${HOSTIOCACHE} \
 		--add sata
 	VBoxManage storageattach "$VBOX" \
 		--storagectl SATA \
