@@ -28,7 +28,7 @@ do
 	\""
 	# Remove generated udev rule for network device as the mac address on the next instantiation is not going to match
         eval "$SSH \"
-	        rm /etc/udev/rules.d/70-persistent-net.rules
+	        sudo rm /etc/udev/rules.d/70-persistent-net.rules
 	\""
 	# Shutdown the virtual machine.
 	eval "$SSH \"sudo shutdown -h now\""
