@@ -29,7 +29,7 @@ d-i passwd/root-password password __ROOT_PASSWORD__
 d-i passwd/root-password-again password __ROOT_PASSWORD__
 d-i passwd/user-uid string 1000
 d-i passwd/user-fullname string VagrantUser
-d-i passwd/username string __USERNAME__
+d-i passwd/username string __USER_NAME__
 d-i passwd/user-password password __PASSWORD__
 d-i passwd/user-password-again password __PASSWORD__
 d-i user-setup/allow-password-weak boolean true

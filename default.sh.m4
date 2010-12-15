@@ -1,11 +1,11 @@
 set -e
 
-mkdir /target/home/__USERNAME__/.ssh
-cat /cdrom/__PUBLIC_KEY__ >/target/home/__USERNAME__/.ssh/authorized_keys
-chmod 700 /target/home/__USERNAME__/.ssh
+mkdir /target/home/__USER_NAME__/.ssh
+cat /cdrom/__PUBLIC_KEY__ >/target/home/__USER_NAME__/.ssh/authorized_keys
+chmod 700 /target/home/__USER_NAME__/.ssh
 chown 1000:1000 \
-	/target/home/__USERNAME__/.ssh \
-	/target/home/__USERNAME__/.ssh/authorized_keys
+	/target/home/__USER_NAME__/.ssh \
+	/target/home/__USER_NAME__/.ssh/authorized_keys
 
 # cp /cdrom/setup.sh /target/etc/profile.d/
 # chmod 644 /target/etc/profile.d/setup.sh

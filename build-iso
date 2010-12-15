@@ -37,7 +37,7 @@ do
 			|| echo server
 		)" \
 		-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
-		-D __USERNAME__="$USERNAME" \
+		-D __USER_NAME__="$USER_NAME" \
 		-D __PASSWORD__="$PASSWORD" \
 		-D __LABEL__="${LABEL}" \
 		"default.seed.m4" >"$COPY/preseed/${LABEL}.seed"
@@ -45,7 +45,7 @@ do
     # cp "$PUBLIC_KEY" "setup.sh" "$COPY/"
 	cp "$PUBLIC_KEY" "sudoers" "$COPY/"
 	m4 \
-		-D __USERNAME__="$USERNAME" \
+		-D __USER_NAME__="$USER_NAME" \
 		-D __PUBLIC_KEY__="$PUBLIC_KEY" \
 		"default.sh.m4" >"$COPY/${LABEL}.sh"
 	# Build a custom ISO.
@@ -55,5 +55,5 @@ do
 		-c isolinux/boot.cat \
 		-boot-load-size 4 -boot-info-table \
 		-o "$ISO" "$COPY"
-	echo "Completed building custom is for ${LABEL} [${ARCH}]"
+	echo "Completed building custom iso for ${LABEL} [${ARCH}]"
 done

@@ -18,7 +18,7 @@
 : ${HOST:="maverick"}
 : ${DOMAIN:="vagrantup.com"}
 : ${ROOT_PASSWORD:="vagrant"}
-: ${USERNAME:="vagrant"}
+: ${USER_NAME:="vagrant"}
 : ${PASSWORD:="vagrant"}
 
 # SSH key to be authorized in virtual machines.
@@ -30,7 +30,7 @@
 : ${SSH:="ssh \
 	-o UserKnownHostsFile=/dev/null \
 	-o StrictHostKeyChecking=no \
-	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p 2222 localhost \
+	-l \"$USER_NAME\" -i \"$PRIVATE_KEY\" -p 2222 localhost \
 "}
 
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
