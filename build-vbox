@@ -27,7 +27,7 @@ do
 		--nestedpaging on \
 		--accelerate3d off \
 		--nic1 nat \
-		--natpf1 guestssh,tcp,,2222,,22 \
+		--natpf1 guestssh,tcp,,"$SSH_PORT",,22 \
 		--audio none \
 		--clipboard disabled \
 		--usb off --usbehci off \

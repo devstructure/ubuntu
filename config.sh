@@ -21,10 +21,11 @@
 
 # SSH command that will connect to the virtual machine.  Add commands
 # onto the end to do other tricks.
+: ${SSH_PORT:="22222"}
 : ${SSH:="ssh \
 	-o UserKnownHostsFile=/dev/null \
 	-o StrictHostKeyChecking=no \
-	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p 2222 localhost \
+	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p \"$SSH_PORT\" localhost \
 "}
 
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
