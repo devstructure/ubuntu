@@ -55,6 +55,13 @@ do
 	  done
 	}
 
+	# Remove the Proxy configuration before packaging a box. Not all vagrant users will be running an apt proxy server on their machines.
+	[ ${BOX_DISABLE_APT_PROXY} -eq 1 ] && {
+        eval "$SSH \"
+	  sudo sed -i '/^Acquire::http::Proxy/ d' /etc/apt/apt.conf
+        \""
+	}
+
 	# Now build the Vagrant box file.
 	vagrant package --base "$VBOX"
 	mv "package.box" \

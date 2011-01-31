@@ -39,6 +39,9 @@
 
 # apt-cacher-ng support. If you have a proxy running locally set the ip address here for apt to proxy requests. (10.0.2.2 is the default gateway ip which should be your host)
 #: ${PROXY_URL:="http://10.0.2.2:3142"}
+# remove apt-proxy config for boxification? To remove the apt config for proxy settings from the box itself
+# (i.e. only use it for the OS install not for subsequent vagrant vms afterwards. Do your colleagues run apt-proxy on their host machines?)
+: ${BOX_DISABLE_APT_PROXY:=1}
 # Add nfs_common packages to vbox for nfs compat with vagrant. Empty string to remove nfs compat. This should make the base image (a bit) smaller, if you don't need nfs support
 : ${NFS_COMPAT:="nfs-common"}
 
