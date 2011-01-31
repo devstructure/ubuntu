@@ -9,14 +9,14 @@ do
 	ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
-	VBoxManage controlvm "$VBOX" poweroff
-	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_vagrant_base #000002"
-	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_base_build #000001"
-	VBoxManage storagectl "$VBOX" --name IDE --remove
-	VBoxManage storagectl "$VBOX" --name SATA --remove
-	VBoxManage unregistervm "$VBOX"
-	VBoxManage closemedium dvd "$PWD/$ISO"
-	VBoxManage closemedium disk "$PWD/$VBOX/$VBOX.vmdk"
+	[ $(VBoxManage list runningvms | grep -c "${VBOX}") -gt 0 ] && VBoxManage controlvm "$VBOX" poweroff
+#	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_vagrant_base #000002"
+#	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_base_build #000001"
+#	VBoxManage storagectl "$VBOX" --name IDE --remove
+#	VBoxManage storagectl "$VBOX" --name SATA --remove
+	VBoxManage unregistervm "$VBOX" --delete
+#	VBoxManage closemedium dvd "$PWD/$ISO"
+#	VBoxManage closemedium disk "$PWD/$VBOX/$VBOX.vmdk"
 	rm -rf "$VBOX"
 
 done

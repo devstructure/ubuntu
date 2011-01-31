@@ -17,7 +17,7 @@ do
 		|| true
 	VBoxManage modifyvm "$VBOX" \
 		--ostype "Ubuntu$([ "$ARCH" = "i386" ] || echo _64)" \
-		--memory 360 \
+		--memory 448 \
 		--vram 12 \
 		--acpi on --ioapic on \
 		--cpus 1 \
@@ -31,11 +31,12 @@ do
 		--audio none \
 		--clipboard disabled \
 		--usb off --usbehci off \
-		--vrdp off \
+		--vrde off \
 		--teleporter off
 
 	# Mount the custom installation ISO.
-	VBoxManage openmedium dvd "$PWD/$ISO" || true
+#	VBoxManage openmedium dvd "$PWD/$ISO" || true
+
 	VBoxManage storagectl "$VBOX" \
 		--name IDE \
 		--add ide
@@ -93,15 +94,20 @@ do
 		--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
 	eval "$SSH \"
 		set -e
+		export DEBCONF_FRONTEND=noninteractive
 		sudo apt-get -y install linux-headers-\\\$(uname -r) build-essential
 		until sudo mount /dev/cdrom /media/cdrom
 		do
 			sleep 1
 		done
-		sudo /media/cdrom/VBoxLinuxAdditions-$([ "$ARCH" = "i386" ] \
-			&& echo x86 \
-			|| echo amd64
-		).run
+		[[ -e /media/cdrom/VBoxLinuxAdditions.run ]] && {
+		  sudo /media/cdrom/VBoxLinuxAdditions.run
+		} || {
+  		  sudo /media/cdrom/VBoxLinuxAdditions-$([ "$ARCH" = "i386" ] \
+		 	  && echo x86 \
+			  || echo amd64
+		  ).run
+		}
 		sudo umount /media/cdrom
 	\""
 	VBoxManage storageattach "$VBOX" \
@@ -115,5 +121,5 @@ do
 	do
 		sleep 1
 	done
-	VBoxManage snapshot "${VBOX}" take "AUTO_${LABEL}_base_build #000001" --description "Snapshot taken after initial build to be able to restore back when recreating vagrant boxes"
+	VBoxManage snapshot "${VBOX}" take "AUTO_${LABEL}_base_build__000001" --description "Snapshot taken after initial build to be able to restore back when recreating vagrant boxes"
 done
