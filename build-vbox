@@ -6,9 +6,15 @@ set -e
 
 for ARCH in $ARCHS
 do
-	ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
-	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
+     ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+     VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
 
+     # Check if the vm already exists
+     set +e
+     VM_EXISTS=$(VBoxManage list vms | grep -c "${VBOX}")
+     set -e
+
+     if [ ${VM_EXISTS} -lt 1 ]; then
 	# Create and configure a virtual machine through VirtualBox.
 	VBoxManage createvm \
 		--name "$VBOX" \
@@ -84,7 +90,7 @@ do
 	do
 		sleep 60
 	done
-
+     fi
 	# Attach the VBoxGuestAdditions ISO, implicitly detaching the custom
 	# installation ISO in the process.  Install the additions and empty
 	# the drive.
@@ -95,7 +101,7 @@ do
 	eval "$SSH \"
 		set -e
 		export DEBCONF_FRONTEND=noninteractive
-		sudo apt-get -y install linux-headers-\\\$(uname -r) build-essential
+		sudo -E apt-get -y install linux-headers-\\\$(uname -r) build-essential
 		until sudo mount /dev/cdrom /media/cdrom
 		do
 			sleep 1

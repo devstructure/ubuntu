@@ -22,7 +22,8 @@ do
 	# Install Ruby, RubyGems, and Chef as Vagrant requires.
 	eval "$SSH \"
 		set -e
-		sudo apt-get -y install build-essential ruby ruby-dev rubygems
+		export DEBCONF_FRONTEND=noninteractive
+		sudo -E apt-get -y install build-essential ruby ruby-dev rubygems
 		sudo gem install --no-rdoc --no-ri chef
 		echo 'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/lib/gems/1.8/bin\"' | sudo tee /etc/environment >/dev/null
 	\""
