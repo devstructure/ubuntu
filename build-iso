@@ -40,6 +40,7 @@ do
 		-D __USER_NAME__="$USER_NAME" \
 		-D __PASSWORD__="$PASSWORD" \
 		-D __LABEL__="${LABEL}" \
+		-D __NFS_COMPAT__="${NFS_COMPAT}" \
 		"default.seed.m4" >"$COPY/preseed/${LABEL}.seed"
 
     # cp "$PUBLIC_KEY" "setup.sh" "$COPY/"

@@ -41,7 +41,7 @@ d-i mirror/http/proxy string
 # d-i apt-setup/local0/source boolean false
 # d-i apt-setup/local0/key string http://packages.devstructure.com/keyring.gpg
 tasksel tasksel/first multiselect
-d-i pkgsel/include string curl openssh-server
+d-i pkgsel/include string curl openssh-server acpi-support __NFS_COMPAT__
 #d-i pkgsel/include string openssh-server sandbox blueprint
 d-i pkgsel/update-policy select none
 d-i pkgsel/install-language-support boolean false

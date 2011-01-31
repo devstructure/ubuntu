@@ -37,6 +37,9 @@
 #: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
 : ${VBOX_GUEST_ADDITIONS:="/usr/share/virtualbox/VBoxGuestAdditions.iso"}
 
+# Add nfs_common packages to vbox for nfs compat with vagrant. Empty string to remove nfs compat. This should make the base image (a bit) smaller, if you don't need nfs support
+: ${NFS_COMPAT:="nfs-common"}
+
 # Enable Host IO cache on ext4 filesystems. Unless explicitly specified here, build-vbox will check both current build dir and home dir (home of vagrant box cache) to see if they are ext4 filesystems
 # Enable hostiocache var
 #: ${HOSTIOCACHE:=" --hostiocache on"}
