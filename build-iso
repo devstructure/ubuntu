@@ -41,6 +41,7 @@ do
 		-D __PASSWORD__="$PASSWORD" \
 		-D __LABEL__="${LABEL}" \
 		-D __NFS_COMPAT__="${NFS_COMPAT}" \
+		-D __PROXY_URL__="${PROXY_URL}" \
 		"default.seed.m4" >"$COPY/preseed/${LABEL}.seed"
 
     # cp "$PUBLIC_KEY" "setup.sh" "$COPY/"

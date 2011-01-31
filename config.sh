@@ -37,6 +37,8 @@
 #: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
 : ${VBOX_GUEST_ADDITIONS:="/usr/share/virtualbox/VBoxGuestAdditions.iso"}
 
+# apt-cacher-ng support. If you have a proxy running locally set the ip address here for apt to proxy requests. (10.0.2.2 is the default gateway ip which should be your host)
+#: ${PROXY_URL:="http://10.0.2.2:3142"}
 # Add nfs_common packages to vbox for nfs compat with vagrant. Empty string to remove nfs compat. This should make the base image (a bit) smaller, if you don't need nfs support
 : ${NFS_COMPAT:="nfs-common"}
 
