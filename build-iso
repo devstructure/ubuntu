@@ -8,7 +8,7 @@ for ARCH in $ARCHS
 do
 	ORIG="ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 	COPY="ubuntu-$VERSION-$DISTRO-$ARCH"
-	ISO="vagrant-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 
 	# Download the original ISO if it isn't present already.
 	[ -f "$ORIG" ] || curl -L -o "$ORIG" \
@@ -36,7 +36,7 @@ do
 		-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
 		-D __USERNAME__="$USERNAME" \
 		-D __PASSWORD__="$PASSWORD" \
-		"vagrant.seed.m4" >"$COPY/preseed/vagrant.seed"
+		"unattended.seed.m4" >"$COPY/preseed/unattended.seed"
 
 	# Build a custom ISO.
 	mkisofs -r -V "Ubuntu $VERSION for Vagrant" \

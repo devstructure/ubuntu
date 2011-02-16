@@ -1,5 +1,8 @@
 #
 
+# The nickname of this ISO, VirtualBox image, and Vagrant box.
+: ${NICKNAME:="vagrant"}
+
 # Arguments given to the download router.
 : ${VERSION:="10.10"}
 : ${DISTRO:="server"}

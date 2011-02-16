@@ -39,7 +39,6 @@ d-i user-setup/encrypt-home boolean false
 d-i mirror/http/proxy string
 tasksel tasksel/first multiselect
 d-i pkgsel/include string curl openssh-server
-#d-i pkgsel/include string openssh-server sandbox blueprint
 d-i pkgsel/update-policy select none
 d-i pkgsel/install-language-support boolean false
 
