@@ -34,7 +34,7 @@ do
 	# Now build the Vagrant box file.
 	vagrant package --base "$VBOX"
 	mv "package.box" \
-		"$NICKAME$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
+		"$NICKNAME$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
 
 done
 
