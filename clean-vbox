@@ -1,20 +1,16 @@
 #!/bin/sh
 
-# set -e # Try our best to finish here.
+set -e
 
 . "$(dirname $0)/config.sh"
 
-for ARCH in $ARCHS
-do
-	ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
-	VBOX="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH"
+ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+VBOX="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH"
 
-	VBoxManage controlvm "$VBOX" poweroff
-	VBoxManage storagectl "$VBOX" --name IDE --remove
-	VBoxManage storagectl "$VBOX" --name SATA --remove
-	VBoxManage unregistervm "$VBOX"
-	VBoxManage closemedium dvd "$PWD/$ISO"
-	VBoxManage closemedium disk "$PWD/$VBOX/$VBOX.vmdk"
-	rm -rf "$VBOX"
-
-done
+VBoxManage controlvm "$VBOX" poweroff
+VBoxManage storagectl "$VBOX" --name IDE --remove
+VBoxManage storagectl "$VBOX" --name SATA --remove
+VBoxManage unregistervm "$VBOX"
+VBoxManage closemedium dvd "$PWD/$ISO"
+VBoxManage closemedium disk "$PWD/$VBOX/$VBOX.vmdk"
+rm -rf "$VBOX"

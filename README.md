@@ -1,7 +1,7 @@
 Ubuntu for DevStructure
 =======================
 
-Build a custom Ubuntu ISO for DevStructure by downloading, extracting,
+Build a custom Ubuntu ISO for Vagrant by downloading, extracting,
 tweaking, and packaging the stock Ubuntu ISO.
 
 Build dependencies
@@ -25,7 +25,7 @@ Features in the ISO
 
 * Network access is configured using sane default settings.  WiFi is
   not supported.
-* The hostname is `devstructure`; the domain is `vagrantup.com`.  These
+* The hostname is `vagrant`; the domain is `vagrantup.com`.  These
   are configurable.
 * The system clock is set to UTC.
 * The entire disk is partitioned `ext4` without LVM.
@@ -34,7 +34,6 @@ Features in the ISO
 * The `root` and `vagrant` users exist; both their password are `vagrant`.
   Vagrant's standard insecure SSH key is authorized for `vagrant`.  These
   are all configurable.
-* DevStructure's Debian archive is added to the source list.
 * OpenSSH server is installed.
 * VirtualBox Guest Additions are installed.
 
@@ -42,8 +41,8 @@ Features in the Vagrant boxes
 -----------------------------
 
 * Ruby 1.8.7
-* RubyGems 1.3.7
-* Chef 0.9.12
+* RubyGems
+* Chef
 
 Building
 --------
@@ -62,3 +61,5 @@ Building Vagrant boxes:
 
 There are matching `clean-{iso,vbox,vagrant}` programs that remove the
 products of their build counterparts.
+
+The `Makefile` contains targets for common build tasks.

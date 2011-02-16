@@ -4,46 +4,42 @@ set -e
 
 . "$(dirname $0)/config.sh"
 
-for ARCH in $ARCHS
-do
-	ORIG="ubuntu-$VERSION-$DISTRO-$ARCH.iso"
-	COPY="ubuntu-$VERSION-$DISTRO-$ARCH"
-	ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+ORIG="ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+COPY="ubuntu-$VERSION-$DISTRO-$ARCH"
+ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 
-	# Download the original ISO if it isn't present already.
-	[ -f "$ORIG" ] || curl -L -o "$ORIG" \
-		-d distro="$DISTRO" \
-		-d release="$RELEASE" \
-		-d bits="$([ "$ARCH" = "i386" ] && echo 32 || echo 64)" \
-		"http://www.ubuntu.com/start-download"
+# Download the original ISO if it isn't present already.
+[ -f "$ORIG" ] || curl -L -o "$ORIG" \
+	-d distro="$DISTRO" \
+	-d release="$RELEASE" \
+	-d bits="$([ "$ARCH" = "i386" ] && echo 32 || echo 64)" \
+	"http://www.ubuntu.com/start-download"
 
-	# Make a writable copy of the original ISO.  This uses the `hdiutil`
-	# command that is specific to Mac OS X.
-	hdiutil attach -mountpoint "mount" "$ORIG"
-	rsync -a "mount/" "$COPY"
-	hdiutil detach "mount"
-	chmod -R +w "$COPY"
+# Make a writable copy of the original ISO.  This uses the `hdiutil`
+# command that is specific to Mac OS X.
+hdiutil attach -mountpoint "mount" "$ORIG"
+rsync -a "mount/" "$COPY"
+hdiutil detach "mount"
+chmod -R +w "$COPY"
 
-	# Customize the writable copy.
-	cp "isolinux.cfg" "$COPY/isolinux/"
-	m4 \
-		-D __HOST__="$HOST" \
-		-D __DOMAIN__="$DOMAIN" \
-		-D __KERNEL__="linux-$([ "$ARCH" = "i386" ] \
-			&& echo generic-pae \
-			|| echo server
-		)" \
-		-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
-		-D __USERNAME__="$USERNAME" \
-		-D __PASSWORD__="$PASSWORD" \
-		"unattended.seed.m4" >"$COPY/preseed/unattended.seed"
+# Customize the writable copy.
+cp "isolinux.cfg" "$COPY/isolinux/"
+m4 \
+	-D __HOST__="$HOST" \
+	-D __DOMAIN__="$DOMAIN" \
+	-D __KERNEL__="linux-$([ "$ARCH" = "i386" ] \
+		&& echo generic-pae \
+		|| echo server
+	)" \
+	-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
+	-D __USERNAME__="$USERNAME" \
+	-D __PASSWORD__="$PASSWORD" \
+	"unattended.seed.m4" >"$COPY/preseed/unattended.seed"
 
-	# Build a custom ISO.
-	mkisofs -r -V "Ubuntu $VERSION for Vagrant" \
-		-cache-inodes -J -l -no-emul-boot \
-		-b isolinux/isolinux.bin \
-		-c isolinux/boot.cat \
-		-boot-load-size 4 -boot-info-table \
-		-o "$ISO" "$COPY"
-
-done
+# Build a custom ISO.
+mkisofs -r -V "Ubuntu $VERSION for Vagrant" \
+	-cache-inodes -J -l -no-emul-boot \
+	-b isolinux/isolinux.bin \
+	-c isolinux/boot.cat \
+	-boot-load-size 4 -boot-info-table \
+	-o "$ISO" "$COPY"

@@ -8,8 +8,8 @@
 : ${DISTRO:="server"}
 : ${RELEASE:="latest"}
 
-# Architectures being built.
-: ${ARCHS:="i386 amd64"}
+# Architecture being built.
+: ${ARCH:="i386"}
 
 # Hardcoded host information.
 : ${HOST:="vagrant"}
