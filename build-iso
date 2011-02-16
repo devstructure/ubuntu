@@ -8,7 +8,7 @@ for ARCH in $ARCHS
 do
 	ORIG="ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 	COPY="ubuntu-$VERSION-$DISTRO-$ARCH"
-	ISO="devstructure-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	ISO="vagrant-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 
 	# Download the original ISO if it isn't present already.
 	[ -f "$ORIG" ] || curl -L -o "$ORIG" \
@@ -36,16 +36,10 @@ do
 		-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
 		-D __USERNAME__="$USERNAME" \
 		-D __PASSWORD__="$PASSWORD" \
-		"devstructure.seed.m4" >"$COPY/preseed/devstructure.seed"
-	cp "$PUBLIC_KEY" "sudoers" "$COPY/"
-	m4 \
-		-D __USERNAME__="$USERNAME" \
-		-D __PUBLIC_KEY__="$PUBLIC_KEY" \
-		"devstructure.sh.m4" >"$COPY/devstructure.sh"
-	curl -o "$COPY/setup.sh" "https://devstructure.com/setup.sh"
+		"vagrant.seed.m4" >"$COPY/preseed/vagrant.seed"
 
 	# Build a custom ISO.
-	mkisofs -r -V "Ubuntu $VERSION for DevStructure" \
+	mkisofs -r -V "Ubuntu $VERSION for Vagrant" \
 		-cache-inodes -J -l -no-emul-boot \
 		-b isolinux/isolinux.bin \
 		-c isolinux/boot.cat \

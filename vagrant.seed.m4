@@ -37,9 +37,6 @@ d-i user-setup/encrypt-home boolean false
 
 # Packages and repositories.
 d-i mirror/http/proxy string
-d-i apt-setup/local0/repository string http://packages.devstructure.com maverick main
-d-i apt-setup/local0/source boolean false
-d-i apt-setup/local0/key string http://packages.devstructure.com/keyring.gpg
 tasksel tasksel/first multiselect
 d-i pkgsel/include string curl openssh-server
 #d-i pkgsel/include string openssh-server sandbox blueprint
@@ -52,6 +49,3 @@ d-i grub-installer/with_other_os boolean true
 d-i finish-install/reboot_in_progress note
 d-i cdrom-detect/eject boolean true
 d-i debian-installer/splash boolean false
-
-# Everything else.
-d-i preseed/late_command string sh /cdrom/devstructure.sh
