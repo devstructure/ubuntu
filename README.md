@@ -37,13 +37,6 @@ Features in the ISO
 * OpenSSH server is installed.
 * VirtualBox Guest Additions are installed.
 
-Features in the Vagrant boxes
------------------------------
-
-* Ruby 1.8.7
-* RubyGems
-* Chef
-
 Building
 --------
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+# set -e # Try our best to finish here.
 
 . "$(dirname $0)/config.sh"
 
