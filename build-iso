@@ -35,6 +35,11 @@ m4 \
 	-D __USERNAME__="$USERNAME" \
 	-D __PASSWORD__="$PASSWORD" \
 	"unattended.seed.m4" >"$COPY/preseed/unattended.seed"
+cp "$PUBLIC_KEY" "sudoers" "$COPY/"
+m4 \
+	-D __USERNAME__="$USERNAME" \
+	-D __PUBLIC_KEY__="$PUBLIC_KEY" \
+	"late_command.sh.m4" >"$COPY/late_command.sh"
 
 # Build a custom ISO.
 mkisofs -r -V "Ubuntu $VERSION for Vagrant" \

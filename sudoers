@@ -1,0 +1,4 @@
+Defaults !env_reset
+Defaults !secure_path
+
+ALL ALL=(ALL) NOPASSWD: ALL
