@@ -1,0 +1,78 @@
+#!/bin/sh
+
+# PXE BOOT [WVVVVMIP] (Work Very Very Very Very Much in Progress!)
+# New script to take the iso image and use it and the parameters defined in the config.sh to setup and use pxe boot for setting up vagrant boxes
+#
+
+set -e
+
+. "$(dirname $0)/config.sh"
+
+[ ${VBOX_PXE_BUILD} -eq 1 ] || {
+  echo "PXE Building is DISABLED. Please enable in config.sh"
+  exit 2
+}
+
+for ARCH in $ARCHS
+do
+	ORIG="ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+	COPY="ubuntu-$VERSION-$DISTRO-$ARCH"
+	ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+        VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
+	NETBOOT="ubuntu-$VERSION_NAME-$ARCH-netboot"
+	NETBOOT_FILE="${NETBOOT}.tar.gz"
+	NETBOOT_DIR="${VBOX_CONF_HOME}/ubuntu-$VERSION_NAME-netboot"
+	NETBOOT_URI="http://archive.ubuntu.com/ubuntu/dists/$VERSION_NAME/main/installer-$ARCH/current/images/netboot/netboot.tar.gz"
+       	CURR_DIR=$(pwd)
+
+#	echo $NETBOOT_URI
+	# Download the original netboot files if it isn't present already.
+#	echo "${NETBOOT_DIR}"
+	[ -f "$NETBOOT_FILE" ] || { 
+		curl -L -o "${NETBOOT_FILE}" "${NETBOOT_URI}"
+	}
+	[ -d ${NETBOOT_DIR} ] || mkdir -p ${NETBOOT_DIR}
+	[ -d ${PRESEED_PATH} ] || mkdir -p ${PRESEED_PATH}
+	
+	(cd ${NETBOOT_DIR} && tar xzf ${CURR_DIR}/${NETBOOT}.tar.gz)
+	# Make a e copy of the original ISO.  This uses the `hdiutil`
+	# command that is specific to Mac OS X.
+	
+	# Customize the writable copy.
+	mv "${NETBOOT_DIR}/ubuntu-installer/${ARCH}/boot-screens/syslinux.cfg" "${NETBOOT_DIR}/ubuntu-installer/${ARCH}/boot-screens/syslinux.cfg_ORIG"
+	m4 \
+	        -D __LABEL__="${LABEL}" \
+		-D __ARCH__="$ARCH" \
+		-D __HOST__="$HOST" \
+		-D __PRESEED_URI__="${PRESEED_HOST}/${LABEL}.seed" \
+	        "pxelinux.cfg.m4" > "${NETBOOT_DIR}/ubuntu-installer/${ARCH}/boot-screens/syslinux.cfg"
+	ln -nfs ${NETBOOT_DIR}/pxelinux.0 ${NETBOOT_DIR}/${VBOX}.pxe
+	m4 \
+		-D __HOST__="$HOST" \
+		-D __DOMAIN__="$DOMAIN" \
+		-D __KERNEL__="linux-$([ "$ARCH" = "i386" ] \
+			&& echo generic-pae \
+			|| echo server
+		)" \
+		-D __ROOT_PASSWORD__="$ROOT_PASSWORD" \
+		-D __USER_NAME__="$USER_NAME" \
+		-D __PASSWORD__="$PASSWORD" \
+		-D __LABEL__="${LABEL}" \
+		-D __NFS_COMPAT__="${NFS_COMPAT}" \
+		-D __VERSION_NAME__="${VERSION_NAME}" \
+		-D __PROXY_URL__="${PROXY_URL}" \
+                -D __LOCALE__="en_US" \
+                -D __PRESEED_HOST__="${PRESEED_HOST}" \
+		"pxe.seed.m4" >"${PRESEED_PATH}/${LABEL}.seed"
+
+    # cp "$PUBLIC_KEY" "setup.sh" "$COPY/"
+	cp "$PUBLIC_KEY" "sudoers" "${NETBOOT_DIR}/"
+	tar -czf ${PRESEED_PATH}/setup.tgz "${PUBLIC_KEY}" "sudoers"
+	m4 \
+		-D __LABEL__="$LABEL" \
+		-D __PRESEED_HOST__="$PRESEED_HOST" \
+		-D __USER_NAME__="$USER_NAME" \
+		-D __PUBLIC_KEY__="$PUBLIC_KEY" \
+		"perm_setup.sh.m4" >"${PRESEED_PATH}/${LABEL}.sh"
+	echo "** Completed building custom pxe for ${LABEL} [${ARCH}]"
+done

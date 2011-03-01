@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# set -e # Try our best to finish here.
+
+. "$(dirname $0)/config.sh"
+
+for ARCH in $ARCHS
+do
+	NETBOOT="ubuntu-$VERSION_NAME-$ARCH-netboot"
+	NETBOOT_FILE="${NETBOOT}.tar.gz"
+	NETBOOT_DIR="${VBOX_CONF_HOME}/ubuntu-$VERSION_NAME-netboot"
+	NETBOOT_URI="http://archive.ubuntu.com/ubuntu/dists/$VERSION_NAME/main/installer-$ARCH/current/images/netboot/netboot.tar.gz"
+       	CURR_DIR=$(pwd)
+	
+	# Remove extracted netboot files + custom configs
+        rm -rf "${NETBOOT_DIR}"
+	# Remove the preseed file.
+	rm -f "${PRESEED_PATH}/${LABEL}.seed"
+	# Remove the initial user setup script.
+	rm -f "${PRESEED_PATH}/${LABEL}.sh"
+	
+	echo "** Cleaned custom pxe for ${LABEL} [${ARCH}]"
+done

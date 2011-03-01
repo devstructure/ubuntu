@@ -8,6 +8,14 @@ for ARCH in $ARCHS
 do
      ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
      VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
+     NETBOOT="ubuntu-$VERSION-$ARCH-netboot"
+     NETBOOT_FILE="${NETBOOT}.tar.gz"
+     NETBOOT_DIR="${VBOX_CONF_HOME}/ubuntu-$VERSION_NAME-netboot"
+     NETBOOT_URI="http://archive.ubuntu.com/ubuntu/dists/$VERSION_NAME/main/installer-$ARCH/current/images/netboot/netboot.tar.gz"
+     CURR_DIR=$(pwd)
+
+     ## Set TFTP Folder based on ARCH
+     ln -nfs ${NETBOOT_DIR} ${VBOX_CONF_HOME}/TFTP
 
      # Check if the vm already exists
      set +e
@@ -15,6 +23,9 @@ do
      set -e
 
      if [ ${VM_EXISTS} -lt 1 ]; then
+     
+        [ ${VBOX_PXE_BUILD} -eq 1 ] && { pxe_boot_order="--boot1 disk --boot2 net"; } || pxe_boot_order=""
+
 	# Create and configure a virtual machine through VirtualBox.
 	VBoxManage createvm \
 		--name "$VBOX" \
@@ -38,18 +49,12 @@ do
 		--clipboard disabled \
 		--usb off --usbehci off \
 		--vrde off \
+		${pxe_boot_order} \
 		--teleporter off
-
-	# Mount the custom installation ISO.
-#	VBoxManage openmedium dvd "$PWD/$ISO" || true
 
 	VBoxManage storagectl "$VBOX" \
 		--name IDE \
 		--add ide
-	VBoxManage storageattach "$VBOX" \
-		--storagectl IDE \
-		--port 1 --device 0 \
-		--type dvddrive --medium "$PWD/$ISO"
 
 	# Mount a virtual hard disk.
 	VBoxManage createhd \
@@ -83,9 +88,43 @@ do
 
 	# Start the virtual machine and the OS installation.  This will take
 	# a while so this time it gets a GUI.  Spin slowly until SSH is usable.
+     fi
+
+        if [ ${VBOX_PXE_BUILD} -lt 1 ]; then 
+  	  # Mount the custom installation ISO.
+  #	  VBoxManage openmedium dvd "$PWD/$ISO" || true
+
+	  VBoxManage storageattach "$VBOX" \
+		--storagectl IDE \
+		--port 1 --device 0 \
+		--type dvddrive --medium "$PWD/$ISO"
+	else
+	  VBoxManage storageattach "$VBOX" \
+		--storagectl IDE \
+		--port 1 --device 0 \
+		--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
+	
+	fi
+
+     set +e
+     VM_RUNS=$(VBoxManage list runningvms | grep -c "${VBOX}")
+     set -e
+
+     if [ ${VM_RUNS} -lt 1 ]; then
+     
+       ## Start a webserver for the preseed files.
+       [ ${VBOX_PXE_BUILD} -eq 1 -a ${PRESEED_WEBSERVER} -eq 1 ] && {
+         echo -n "Starting webserver for preseed files..."
+         cd $PRESEED_PATH && python -m SimpleHTTPServer &
+	 webserver_PID=$!
+	 echo "done"
+       }
+       
 	VBoxManage startvm "$VBOX" --type gui
 	## Set better perms on the private key to avoid ssh abort
 	chmod 600 ${PRIVATE_KEY}
+#	VBoxManage modifyvm "${VBOX}" \
+#		--boot1 disk 
 	until eval "$SSH exit"
 	do
 		sleep 60
@@ -94,25 +133,30 @@ do
 	# Attach the VBoxGuestAdditions ISO, implicitly detaching the custom
 	# installation ISO in the process.  Install the additions and empty
 	# the drive.
-	VBoxManage storageattach "$VBOX" \
+        if [ ${VBOX_PXE_BUILD} -lt 1 ]; then 
+  	  VBoxManage storageattach "$VBOX" \
 		--storagectl IDE \
 		--port 1 --device 0 \
 		--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
+	fi
+	
 	eval "$SSH \"
 		set -e
+		[ $(lsmod | grep -c vboxguest) -eq 1 ] && exit 0;
 		export DEBCONF_FRONTEND=noninteractive
 		sudo -E apt-get -y install linux-headers-\\\$(uname -r) build-essential
+		[ -d /media/cdrom ] || sudo mkdir -p /media/cdrom
 		until sudo mount /dev/cdrom /media/cdrom
 		do
 			sleep 1
 		done
 		[[ -e /media/cdrom/VBoxLinuxAdditions.run ]] && {
-		  sudo /media/cdrom/VBoxLinuxAdditions.run
+		  sudo /media/cdrom/VBoxLinuxAdditions.run force
 		} || {
   		  sudo /media/cdrom/VBoxLinuxAdditions-$([ "$ARCH" = "i386" ] \
 		 	  && echo x86 \
 			  || echo amd64
-		  ).run
+		  ).run force --nox11
 		}
 		sudo umount /media/cdrom
 	\""
@@ -120,7 +164,12 @@ do
 		--storagectl IDE \
 		--port 1 --device 0 \
 		--type dvddrive --medium emptydrive
-
+	
+        [ ${VBOX_PXE_BUILD} -eq 1 -a ${PRESEED_WEBSERVER} -eq 1 ] && {
+          echo -n "Stopping webserver for preseed files..."
+          kill ${webserver_PID}
+	  wait && echo "done"
+	}
 	# Shutdown the virtual machine.
 	eval "$SSH \"sudo shutdown -h now\""
 	until VBoxManage showvminfo "$VBOX" | grep "^State: *powered off"

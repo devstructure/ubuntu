@@ -1,21 +1,22 @@
 #
 
 # Arguments given to the download router.
-: ${VERSION:="10.10"}
 : ${DISTRO:="server"}
+: ${VERSION:="11.04"}
+: ${VERSION_NAME:="natty"}
 : ${RELEASE:="latest"}
 
 # Generated ISO Prefix
-: ${ISOPREFIX:="vagrant"}
-: ${LABEL:="vagrant"}
-
+: ${ISOPREFIX:="phatforge"}
+: ${LABEL:="phatforge"}
 
 # Architectures being built.
 : ${ARCHS:="i386 amd64"}
+#: ${ARCHS:="amd64"}
 
 # Hardcoded host information.
 # : ${HOST:="devstructure"}
-: ${HOST:="maverick"}
+: ${HOST:="${VERSION_NAME}"}
 : ${DOMAIN:="vagrantup.com"}
 : ${ROOT_PASSWORD:="vagrant"}
 : ${USER_NAME:="vagrant"}
@@ -36,6 +37,20 @@
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
 #: ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
 : ${VBOX_GUEST_ADDITIONS:="/usr/share/virtualbox/VBoxGuestAdditions.iso"}
+
+#### PXE BUILD SETTINGS
+## You need a webserver to serve the preseed file. We currently use python's simpleHTTPServer module, but you can change the path to a full webserver if you want.
+## A proxy is recommended!
+###
+## Enable build via pxe
+: ${VBOX_PXE_BUILD:=0}
+## VirtualBox config home (Location of the VirtualBox.xml file), for pxe boot support
+: ${VBOX_CONF_HOME:="${HOME}/.VirtualBox"}
+# Enable a python webserver for the preseed files.(Default on. Disable if you are hosting your preseed files on your own webserver
+: ${PRESEED_WEBSERVER:=1}
+## Preseed URI address. Default is set to the Host machine ip. This address can be set to a remote url (assuming your VM can access it.) Please see README.PXE
+: ${PRESEED_HOST:="http://10.0.2.2:8000"}
+: ${PRESEED_PATH:="web-root"}
 
 # apt-cacher-ng support. If you have a proxy running locally set the ip address here for apt to proxy requests. (10.0.2.2 is the default gateway ip which should be your host)
 #: ${PROXY_URL:="http://10.0.2.2:3142"}

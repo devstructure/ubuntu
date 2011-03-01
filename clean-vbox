@@ -8,15 +8,21 @@ for ARCH in $ARCHS
 do
 	ISO="${ISOPREFIX}-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 	VBOX="${LABEL}-ubuntu-$VERSION-$DISTRO-$ARCH"
-
-	[ $(VBoxManage list runningvms | grep -c "${VBOX}") -gt 0 ] && VBoxManage controlvm "$VBOX" poweroff
-#	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_vagrant_base #000002"
-#	VBoxManage snapshot "${VBOX}" delete "AUTO_${LABEL}_base_build #000001"
-#	VBoxManage storagectl "$VBOX" --name IDE --remove
-#	VBoxManage storagectl "$VBOX" --name SATA --remove
-	VBoxManage unregistervm "$VBOX" --delete
-#	VBoxManage closemedium dvd "$PWD/$ISO"
-#	VBoxManage closemedium disk "$PWD/$VBOX/$VBOX.vmdk"
+        VMLIST=$(VBoxManage list vms)
+	RUNNING_VMLIST=$(VBoxManage list runningvms)
+	
+	## Power off running vms
+	[ $(echo "${RUNNING_VMLIST}" | grep -c "${VBOX}") -gt 0 ] && {
+	  echo -n "VBox ${VBOX} is running... Powering off"
+	  VBoxManage controlvm "$VBOX" poweroff
+	  sleep 1 # Lets give the vm to shutdown properly.
+	  [ $? -eq 0 ] && { echo "... done"; } || { echo "... Failed!"; }
+	}
+	## Remove vms if they exist
+	[ $(echo "${VMLIST}" | grep -c "${VBOX}") -gt 0 ] && {
+	  echo -n "Removing VBox [${VBOX}]..."
+	  VBoxManage unregistervm "$VBOX" --delete
+	  [ $? -eq 0 ] && { echo "... done"; } || { echo "... Failed!"; }	
+	}
 	rm -rf "$VBOX"
-
 done
