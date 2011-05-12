@@ -1,5 +1,9 @@
 # Preseed Ubuntu for Vagrant.
 
+# Keyboard.
+d-i console-keymaps-at/keymap select us
+d-i keyboard-configuration/xkb-keymap select us
+
 # Network.
 d-i netcfg/get_hostname string __HOST__
 d-i netcfg/get_domain string __DOMAIN__
