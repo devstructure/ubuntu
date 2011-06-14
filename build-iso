@@ -15,11 +15,11 @@ ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 	-d bits="$([ "$ARCH" = "i386" ] && echo 32 || echo 64)" \
 	"http://www.ubuntu.com/start-download"
 
-# Make a writable copy of the original ISO.  This uses the `hdiutil`
-# command that is specific to Mac OS X.
-hdiutil attach -mountpoint "mount" "$ORIG"
+# Make a writable copy of the original ISO.
+mkdir -p mount
+sudo mount -o loop "$ORIG" mount
 rsync -a "mount/" "$COPY"
-hdiutil detach "mount"
+sudo umount mount
 chmod -R +w "$COPY"
 
 # Customize the writable copy.
