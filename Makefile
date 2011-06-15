@@ -1,6 +1,6 @@
 all:
 
-clean: clean-lynx32 clean-lynx64 clean-meerkat32 clean-meerkat64 clean-narwhal32 clean-narwhal64
+clean: clean-lynx32 clean-lynxx32 clean-lynx64 clean-lynxx64 clean-meerkat32 clean-meerkat64 clean-narwhal32 clean-narwhal64
 
 lynx32:
 	NICKNAME=lynx VERSION=10.04 ARCH=i386 ./build-iso
@@ -12,6 +12,16 @@ clean-lynx32:
 	NICKNAME=lynx VERSION=10.04 ARCH=i386 ./clean-vbox || true
 	NICKNAME=lynx VERSION=10.04 ARCH=i386 ./clean-vagrant
 
+lynxx32:
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=i386 ./build-iso
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=i386 ./build-vbox
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=i386 ./build-vagrant
+
+clean-lynxx32:
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=i386 ./clean-iso
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=i386 ./clean-vbox || true
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=i386 ./clean-vagrant
+
 lynx64:
 	NICKNAME=lynx VERSION=10.04 ARCH=amd64 ./build-iso
 	NICKNAME=lynx VERSION=10.04 ARCH=amd64 ./build-vbox
@@ -21,6 +31,16 @@ clean-lynx64:
 	NICKNAME=lynx VERSION=10.04 ARCH=amd64 ./clean-iso
 	NICKNAME=lynx VERSION=10.04 ARCH=amd64 ./clean-vbox || true
 	NICKNAME=lynx VERSION=10.04 ARCH=amd64 ./clean-vagrant
+
+lynxx64:
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=amd64 ./build-iso
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=amd64 ./build-vbox
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=amd64 ./build-vagrant
+
+clean-lynxx64:
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=amd64 ./clean-iso
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=amd64 ./clean-vbox || true
+	NICKNAME=lynxx VERSION=10.04.2 ARCH=amd64 ./clean-vagrant
 
 meerkat32:
 	NICKNAME=meerkat VERSION=10.10 ARCH=i386 ./build-iso
