@@ -8,16 +8,6 @@ ORIG="ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 COPY="ubuntu-$VERSION-$DISTRO-$ARCH"
 ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 
-case $(uname) in
-    'Linux')
-        PLATFORM='linux' ;;
-    'Darwin')
-        PLATFORM='osx' ;;
-    *)
-        echo "Unsupported platform: $(uname)"
-        exit 1 ;;
-esac
-
 # Download the original ISO if it isn't present already.
 [ -f "$ORIG" ] || curl -L -o "$ORIG" \
 	-d distro="$DISTRO" \

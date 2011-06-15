@@ -1,5 +1,16 @@
 #
 
+# Build platform details, for portability
+case $(uname) in
+    'Linux')
+        PLATFORM='linux' ;;
+    'Darwin')
+        PLATFORM='osx' ;;
+    *)
+        echo "Unsupported platform: $(uname)"
+        exit 1 ;;
+esac
+
 # The nickname of this ISO, VirtualBox image, and Vagrant box.
 : ${NICKNAME:="vagrant"}
 
@@ -30,6 +41,12 @@
 	-o StrictHostKeyChecking=no \
 	-l \"$USERNAME\" -i \"$PRIVATE_KEY\" -p \"$SSH_PORT\" localhost \
 "}
+
+# OpenSSH on Linux will refuse to use a world-readable private key.
+case "$PLATFORM" in
+    'linux')
+        chmod 600 "$PRIVATE_KEY" ;;
+esac
 
 # Fully-qualified pathname of VBoxGuestAdditions.iso.
 : ${VBOX_GUEST_ADDITIONS:="/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso"}
