@@ -5,3 +5,5 @@ set -e
 . "$(dirname $0)/config.sh"
 
 rm -f "$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+rm -rf "ubuntu-$VERSION-$DISTRO-$ARCH"
+rm -rf mount
