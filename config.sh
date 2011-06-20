@@ -20,6 +20,7 @@
 
 # SSH key to be authorized in virtual machines.
 : ${PRIVATE_KEY:="vagrant"}
+chmod 600 "$PRIVATE_KEY"
 : ${PUBLIC_KEY:="vagrant.pub"}
 
 # SSH command that will connect to the virtual machine.  Add commands
