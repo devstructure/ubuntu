@@ -17,10 +17,15 @@ ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 
 # Make a writable copy of the original ISO.  This uses the `hdiutil`
 # command that is specific to Mac OS X.
-hdiutil attach -mountpoint "mount" "$ORIG" \
-	|| mkdir "mount" && sudo mount -o loop "$ORIG" "mount"
+hdiutil attach -mountpoint "mount" "$ORIG" || {
+	mkdir "mount"
+	sudo mount -o loop "$ORIG" "mount"
+}
 rsync -a "mount/" "$COPY"
-hdiutil detach "mount" || sudo umount "mount" && rm -rf "mount"
+hdiutil detach "mount" || {
+	sudo umount "mount"
+	rm -rf "mount"
+}
 chmod -R +w "$COPY"
 
 # Customize the writable copy.
