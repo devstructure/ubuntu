@@ -8,7 +8,7 @@
 : ${DISTRO:="server"}
 : ${RELEASE:="latest"}
 
-# Architecture being built.
+# Architecture being built (i386 or amd64).
 : ${ARCH:="i386"}
 
 # Hardcoded host information.
