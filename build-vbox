@@ -29,18 +29,8 @@ VBoxManage modifyvm "$VBOX" \
 	--audio none \
 	--clipboard disabled \
 	--usb off --usbehci off \
-	--vrdp off \
+	--vrde off \
 	--teleporter off
-
-# Mount the custom installation ISO.
-VBoxManage openmedium dvd "$PWD/$ISO" || true
-VBoxManage storagectl "$VBOX" \
-	--name IDE \
-	--add ide
-VBoxManage storageattach "$VBOX" \
-	--storagectl IDE \
-	--port 1 --device 0 \
-	--type dvddrive --medium "$PWD/$ISO"
 
 # Mount a virtual hard disk.
 VBoxManage createhd \
@@ -56,9 +46,17 @@ VBoxManage storageattach "$VBOX" \
 	--port 0 --device 0 \
 	--type hdd --medium "$PWD/$VBOX/$VBOX.vmdk"
 
+# "Insert" install iso into virtual cd drive
+VBoxManage storageattach "$VBOX" \
+       --storagectl SATA \
+       --port 1 --device 0 \
+       --type dvddrive --medium "$PWD/$ISO"
+
+
 # Start the virtual machine and the OS installation.  This will take
 # a while so this time it gets a GUI.  Spin slowly until SSH is usable.
 VBoxManage startvm "$VBOX" --type gui
+echo "Waiting for installion to finish.."
 until eval "$SSH exit"
 do
 	sleep 60
@@ -68,7 +66,7 @@ done
 # installation ISO in the process.  Install the additions and empty
 # the drive.
 VBoxManage storageattach "$VBOX" \
-	--storagectl IDE \
+	--storagectl SATA \
 	--port 1 --device 0 \
 	--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
 eval "$SSH \"
