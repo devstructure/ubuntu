@@ -80,7 +80,7 @@ eval "$SSH \"
 	sudo umount /media/cdrom
 \""
 VBoxManage storageattach "$VBOX" \
-	--storagectl IDE \
+	--storagectl SATA \
 	--port 1 --device 0 \
 	--type dvddrive --medium emptydrive
 
