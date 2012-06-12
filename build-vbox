@@ -76,10 +76,7 @@ eval "$SSH \"
 	do
 		sleep 1
 	done
-	sudo /media/cdrom/VBoxLinuxAdditions-$([ "$ARCH" = "i386" ] \
-		&& echo x86 \
-		|| echo amd64
-	).run
+	sudo /media/cdrom/VBoxLinuxAdditions.run
 	sudo umount /media/cdrom
 \""
 VBoxManage storageattach "$VBOX" \
