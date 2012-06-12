@@ -8,7 +8,6 @@ ISO="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
 VBOX="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 VBoxManage controlvm "$VBOX" poweroff
-VBoxManage storagectl "$VBOX" --name IDE --remove
 VBoxManage storagectl "$VBOX" --name SATA --remove
 VBoxManage unregistervm "$VBOX"
 VBoxManage closemedium dvd "$PWD/$ISO"
