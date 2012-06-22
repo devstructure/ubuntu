@@ -8,7 +8,6 @@ VBOX="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 # Start the virtual machine.  Spin slowly until SSH is usable.
 VBoxManage startvm "$VBOX" --type gui
-#VBoxHeadless --startvm "$VBOX" --vrdp config
 until eval "$SSH exit"
 do
 	sleep 1
@@ -33,6 +32,8 @@ done
 vagrant package --base "$VBOX"
 mv "package.box" \
 	"$NICKNAME$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
+
+echo "Successfully built vagrant box!"
 
 # Creating Vagrant boxes ruins the normal VM setup so get rid of them.
 eval "$(dirname $0)/clean-vbox"
