@@ -48,6 +48,7 @@ d-i grub-installer/with_other_os boolean true
 d-i finish-install/reboot_in_progress note
 d-i cdrom-detect/eject boolean true
 d-i debian-installer/splash boolean false
+d-i debian-installer/exit/poweroff boolean true
 
 # Everything else.
 d-i preseed/late_command string sh /cdrom/late_command.sh

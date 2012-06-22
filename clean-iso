@@ -5,3 +5,10 @@ set -e
 . "$(dirname $0)/config.sh"
 
 rm -f "$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH.iso"
+{
+        sudo diskutil unmount "mount"
+        sudo /usr/libexec/vndevice detach /dev/vn0
+} || {
+        sudo umount "mount"
+        rm -rf "mount"
+}

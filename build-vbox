@@ -54,21 +54,26 @@ VBoxManage storageattach "$VBOX" \
 
 
 # Start the virtual machine and the OS installation.  This will take
-# a while so this time it gets a GUI.  Spin slowly until SSH is usable.
+# a while so this time it gets a GUI. Wait until installation finished
+# and vm is powered off.
 VBoxManage startvm "$VBOX" --type gui
 echo "Waiting for installion to finish.."
-until eval "$SSH exit"
+until VBoxManage showvminfo "$VBOX" | grep "^State: *powered off"
 do
-	sleep 60
+	sleep 10
 done
 
 # Attach the VBoxGuestAdditions ISO, implicitly detaching the custom
-# installation ISO in the process.  Install the additions and empty
-# the drive.
+# installation ISO in the process.
 VBoxManage storageattach "$VBOX" \
 	--storagectl SATA \
 	--port 1 --device 0 \
 	--type dvddrive --medium "$VBOX_GUEST_ADDITIONS"
+
+# Power up vm again.
+VBoxManage startvm "$VBOX" -- 
+
+# Install guest additions.
 eval "$SSH \"
 	set -e
 	sudo apt-get -y install linux-headers-\\\$(uname -r) build-essential
@@ -79,10 +84,6 @@ eval "$SSH \"
 	sudo /media/cdrom/VBoxLinuxAdditions.run
 	sudo umount /media/cdrom
 \""
-VBoxManage storageattach "$VBOX" \
-	--storagectl SATA \
-	--port 1 --device 0 \
-	--type dvddrive --medium emptydrive
 
 # Shutdown the virtual machine.
 eval "$SSH \"sudo shutdown -h now\""
@@ -90,3 +91,9 @@ until VBoxManage showvminfo "$VBOX" | grep "^State: *powered off"
 do
 	sleep 1
 done
+
+# Remove guest additions cd.
+VBoxManage storageattach "$VBOX" \
+        --storagectl SATA \
+        --port 1 --device 0 \
+        --type dvddrive --medium emptydrive

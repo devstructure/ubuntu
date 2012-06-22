@@ -4,7 +4,7 @@
 : ${NICKNAME:="vagrant"}
 
 # Arguments given to the download router.
-: ${VERSION:="10.10"}
+: ${VERSION:="12.04"}
 : ${DISTRO:="server"}
 : ${RELEASE:="latest"}
 

@@ -1,15 +1,13 @@
-Ubuntu for DevStructure
-=======================
+Ubuntu for Vagrant
+==================
 
-Build a custom Ubuntu ISO for Vagrant by downloading, extracting,
+Build a custom Ubuntu base box for Vagrant by downloading, extracting,
 tweaking, and packaging the stock Ubuntu ISO.
 
 Build dependencies
 ------------------
 
 * `curl`(1).
-* `hdiutil`(1), and therefore Mac OS X.  It may be possible to relax
-  this dependency but it has not been investigated.
 * `m4`(1).
 * `mkisofs`(1) from the `cdrtools` package available from MacPorts or
   Homebrew.
@@ -36,9 +34,14 @@ Features in the ISO
   are all configurable.
 * OpenSSH server is installed.
 * VirtualBox Guest Additions are installed.
+* Chef is installed.
 
 Building
 --------
+
+Edit configuration in
+
+	config.sh
 
 Building ISO images:
 
@@ -52,7 +55,14 @@ Building Vagrant boxes:
 
 	./build-vagrant
 
-There are matching `clean-{iso,vbox,vagrant}` programs that remove the
+There are matching `clean-{iso,vbox,vagrant}` scripts that remove the
 products of their build counterparts.
 
-The `Makefile` contains targets for common build tasks.
+The `Makefile` contains targets for common build tasks. For Ubuntu 12.04
+(Precise Pangolin) 32-bit use
+
+	make precise32
+
+For Ubuntu 12.04 (Precise Pangolin) 64-bit use
+
+	make precise64

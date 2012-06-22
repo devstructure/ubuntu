@@ -8,19 +8,18 @@ VBOX="$NICKNAME-ubuntu-$VERSION-$DISTRO-$ARCH"
 
 # Start the virtual machine.  Spin slowly until SSH is usable.
 VBoxManage startvm "$VBOX" --type gui
-#VBoxHeadless --startvm "$VBOX" --vrdp config
 until eval "$SSH exit"
 do
 	sleep 1
 done
 
 # Install Ruby, RubyGems, and Chef as Vagrant requires.
-# eval "$SSH \"
-# 	set -e
-# 	sudo apt-get -y install build-essential ruby-dev rubygems
-# 	sudo gem install --no-rdoc --no-ri chef
-# 	echo 'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/lib/gems/1.8/bin\"' | sudo tee /etc/environment >/dev/null
-# \""
+eval "$SSH \"
+	set -e
+	sudo apt-get -y install build-essential ruby-dev rubygems
+	sudo gem install --no-rdoc --no-ri chef
+	echo 'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/lib/gems/1.8/bin\"' | sudo tee /etc/environment >/dev/null
+ \""
 
 # Shutdown the virtual machine.
 eval "$SSH \"sudo shutdown -h now\""
@@ -33,6 +32,8 @@ done
 vagrant package --base "$VBOX"
 mv "package.box" \
 	"$NICKNAME$([ "$ARCH" = "i386" ] && echo 32 || echo 64).box"
+
+echo "Successfully built vagrant box!"
 
 # Creating Vagrant boxes ruins the normal VM setup so get rid of them.
 eval "$(dirname $0)/clean-vbox"
